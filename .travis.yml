@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t dhaller/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run dhaller/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t dhaller/multi-client ./client
+  - docker build -t dhaller/multi-nginx ./nginx
+  - docker build -t dhaller/multi-server ./server
+  - docker build -t dhaller/multi-worker ./worker
+
+  #LOG IN  to Docker CLI
+  - echo "$DOCKER_PASSWORD | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push dhaller/multi-client
+  - docker push dhaller/multi-nginx
+  - docker push dhaller/multi-server
+  - docker push dhaller/multi-worker
+  
