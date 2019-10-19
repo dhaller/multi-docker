@@ -3,21 +3,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t dhaller/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t dhal99/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run dhaller/react-test npm test -- --coverage
+  - docker run dhal99/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t dhaller/multi-client ./client
-  - docker build -t dhaller/multi-nginx ./nginx
-  - docker build -t dhaller/multi-server ./server
-  - docker build -t dhaller/multi-worker ./worker
+  - docker build -t dhal99/multi-client ./client
+  - docker build -t dhal99/multi-nginx ./nginx
+  - docker build -t dhal99/multi-server ./server
+  - docker build -t dhal99/multi-worker ./worker
 
   #LOG IN  to Docker CLI
-  - echo "$DOCKER_PASSWORD | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push dhaller/multi-client
-  - docker push dhaller/multi-nginx
-  - docker push dhaller/multi-server
-  - docker push dhaller/multi-worker
-  
+  - echo "$DOCKER_PASSWORD"| docker login -u "$DOCKER_ID" --password-stdin
+  - docker push dhal99/multi-client
+  - docker push dhal99/multi-nginx
+  - docker push dhal99/multi-server
+  - docker push dhal99/multi-worker
